@@ -15,14 +15,16 @@ The preferred way to install this extension is through [composer](http://getcomp
 
 Either run
 
-```bash
-$ composer require 2amigos/yii2-taggable-behavior:~1.0
 ```
-
-or add
-
-```
-"2amigos/yii2-taggable-behavior": "~1.0"
+"require": {
+    "sunwellight/sunwellight/yii2-taggable-behavior": "~1.0",
+},
+"repositories":[
+    {
+        "type": "vcs",
+        "url": "https://github.com/SunwelLight/yii2-taggable-behavior"
+    }
+],
 ```
 
 to the `require` section of your `composer.json` file.
@@ -32,7 +34,7 @@ to the `require` section of your `composer.json` file.
 First you need to configure model as follows:
 
 ```php
-use dosamigos\taggable\Taggable;
+use sunwellight\taggable\Taggable;
 
 class Tour extends ActiveRecord
 {
