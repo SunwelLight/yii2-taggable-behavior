@@ -1,5 +1,5 @@
 {
-    "name": "2amigos/yii2-taggable-behavior",
+    "name": "sunwellight/yii2-taggable-behavior",
     "description": "The taggable behavior for the Yii framework",
     "keywords": [
         "2amigos",
@@ -23,7 +23,12 @@
             "email": "hola@2amigos.us",
             "homepage": "http://2amigos.us",
             "role": "Developer"
-        }
+        },
+         {
+            "name": "Skorobogatov Ilya",
+            "email": "sunwellight@gmail.com",
+            "role": "Developer"
+        },
     ],
     "require": {
         "yiisoft/yii2": "^2.0"
@@ -34,7 +39,7 @@
     },
     "autoload": {
         "psr-4": {
-            "dosamigos\\taggable\\": "src"
+            "sunwellight\\taggable\\": "src"
         }
     },
     "extra": {
