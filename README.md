@@ -36,10 +36,15 @@ use dosamigos\taggable\Taggable;
 
 class Tour extends ActiveRecord
 {
+    const YOUR_TYPE_VALUES = 1;
+    
     public function behaviors() {
         return [
             [
                 'class' => Taggable::className(),
+                'attribute' => 'field_tag_is_used_1',
+                'relation' => 'fieldTagIsUsed1Tags',
+                'relationAdditionalValue' => self::YOUR_TYPE_VALUES,
             ],
         ];
     }
@@ -66,22 +71,46 @@ link the `Tour` Model to the `Tag`:
 
 ```
 +-------------------+
-| tbl_tour_tag_assn |
+| *_tag_assn        |
 +-------------------+
 | tour_id           |
 | tag_id            |
+| type              |
 +-------------------+
 ```
 
 Next, we need to configure the relationship with `Tour`:
+```
++-----------------------+
+| Tour_example          |
++-----------------------+
+| id                    |
+| field_*               |
+| field_tag_is_used_1   |
+| field_tag_is_used_2   |
+| field_tag_is_used_3   |
++-----------------------+
+```
 
 ```php
 /**
  * @return \yii\db\ActiveQuery
  */
+
+ 
 public function getTags()
 {
-    return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('tbl_tour_tag_assn', ['tour_id' => 'id']);
+    return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('*_tag_assn', ['tour_id' => 'id']);
+}
+
+ /**
+ * @return \yii\db\ActiveQuery
+ */
+public function getFieldTagIsUsed1Tags()
+{
+    return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('*_tag_assn', ['tour_id' => 'id'],  function ($query) {
+        $query->andWhere(['type' => self::YOUR_TYPE_VALUES]);
+    });
 }
 ```
 
@@ -114,6 +143,7 @@ public function behaviors()
         // we have created tables and relationship in order to
         // use defaults settings
         Taggable::className(),
+        
     ];
 }
 ```
