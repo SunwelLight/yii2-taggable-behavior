@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://github.com/2amigos/yii2-taggable-behavior
- * @copyright Copyright (c) 2013-2016 2amigOS! Consulting Group LLC
+ * @copyright Copyright (c) 2013-2015 2amigOS! Consulting Group LLC
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
 
@@ -14,7 +14,6 @@ use yii\db\Query;
 
 /**
  * @author Alexander Kochetov <creocoder@gmail.com>
- * @author Antonio Ramirez <hola@2amigos.us>
  */
 class Taggable extends Behavior
 {
@@ -47,6 +46,19 @@ class Taggable extends Behavior
      * @var bool
      */
     public $asArray = false;
+
+    /**
+     * An additional field to link relational data, to be able to bind multiple fields of the same table without
+     * creating separate fields in the binding table for communication mnoe to many.
+     * @var string
+     */
+    public $relationAdditionalField = 'type';
+
+    /**
+     * Values are set for a bunch of specific field from the source table
+     * @var int
+     */
+    public $relationAdditionalValue = NULL;
 
     /**
      * @inheritdoc
@@ -111,7 +123,7 @@ class Taggable extends Behavior
             $items[] = $tag->{$this->name};
         }
 
-        return $this->asArray ? $items : implode(',', $items);
+        return $this->asArray ? $items : implode(', ', $items);
     }
 
     /**
@@ -159,14 +171,14 @@ class Taggable extends Behavior
 
             if ($tag->save()) {
                 $updatedTags[] = $tag;
-                $rows[] = [$this->owner->getPrimaryKey(), $tag->getPrimaryKey()];
+                $rows[] = [$this->owner->getPrimaryKey(), $tag->getPrimaryKey(), $this->relationAdditionalValue];
             }
         }
 
         if (!empty($rows)) {
             $this->owner->getDb()
                 ->createCommand()
-                ->batchInsert($pivot, [key($relation->via->link), current($relation->link)], $rows)
+                ->batchInsert($pivot, [key($relation->via->link), current($relation->link), $this->relationAdditionalField], $rows)
                 ->execute();
         }
 
