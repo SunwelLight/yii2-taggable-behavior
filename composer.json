@@ -28,7 +28,7 @@
             "name": "Skorobogatov Ilya",
             "email": "sunwellight@gmail.com",
             "role": "Developer"
-        },
+        }
     ],
     "require": {
         "yiisoft/yii2": "^2.0"
