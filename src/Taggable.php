@@ -5,7 +5,7 @@
  * @license http://opensource.org/licenses/BSD-3-Clause
  */
 
-namespace dosamigos\taggable;
+namespace sunwellight\taggable;
 
 use yii\base\Behavior;
 use yii\base\Event;
